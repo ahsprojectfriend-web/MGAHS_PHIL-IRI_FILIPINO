@@ -1,454 +1,402 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fil">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phil-IRI Post Test - Araullo High School</title>
-    <!-- Tailwind CSS para sa mabilis na styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React at Babel CDNs -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Modernong font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>PHIL-IRI Post Test | Manuel G. Araullo High School</title>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .serif { font-family: 'Lora', serif; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #b91c1c; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #7f1d1d; }
+        :root { --ahs-maroon: #800000; --ahs-gold: #FFD700; --ahs-light: #fdf2f2; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; max-width: 950px; width: 100%; padding: 40px; border-radius: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .school-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--ahs-maroon); padding-bottom: 15px; }
+        .school-logo { width: 100px; height: 100px; margin-bottom: 10px; }
+        .school-name { font-size: 1.8rem; font-weight: bold; color: var(--ahs-maroon); margin: 0; text-transform: uppercase; }
+        .assessment-title { font-size: 1.2rem; font-weight: bold; color: var(--ahs-maroon); margin-top: 10px; text-transform: uppercase; background: var(--ahs-gold); display: inline-block; padding: 8px 25px; border-radius: 5px; }
+        
+        .grade-header { font-size: 1.5rem; font-weight: bold; color: var(--ahs-maroon); text-align: center; margin-bottom: 20px; margin-top: 0; }
+        .story-title { font-size: 1.5rem; font-weight: bold; color: var(--ahs-maroon); text-transform: uppercase; margin: 0; line-height: 1.2; }
+        
+        #step-indicator { text-align: right; font-weight: bold; color: var(--ahs-maroon); font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; display: none; }
+        .field { display: flex; flex-direction: column; flex: 1; margin-bottom: 15px; }
+        .field label { font-size: 11px; color: #5f6368; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
+        .field input, .field select { padding: 12px; border: 1px solid #dadce0; border-radius: 10px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        
+        .row { display: flex; gap: 15px; flex-wrap: wrap; width: 100%; }
+        .mi-field { flex: 0 0 80px; }
+
+        #passage-reference { border: 3px solid var(--ahs-gold); padding: 35px; border-radius: 15px; line-height: 1.8; font-size: 13pt; font-family: "Segoe UI", sans-serif; background: #fff; margin-bottom: 30px; max-height: 500px; overflow-y: auto; white-space: pre-wrap; position: relative; }
+        
+        .question-card { background: #fff; padding: 30px; border-radius: 20px; border: 2px solid #eee; }
+        .q-text { font-size: 1.4rem; font-weight: 700; color: #222; margin-bottom: 25px; text-align: left; }
+        .option-btn { padding: 18px; border: 1px solid #dadce0; border-radius: 12px; background: white; cursor: pointer; font-size: 1.1rem; text-align: left; width: 100%; margin-bottom: 0; transition: 0.2s; flex: 1; }
+        .option-btn:hover { background: var(--ahs-light); border-color: var(--ahs-maroon); transform: translateX(5px); }
+        .option-btn.selected { background-color: #fee2e2; border-color: #ef4444; color: #b91c1c; font-weight: bold; }
+
+        .btn-primary { background: var(--ahs-maroon); color: white; padding: 20px; border-radius: 50px; cursor: pointer; border: none; font-weight: bold; width: 100%; text-transform: uppercase; }
+        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+        
+        .speak-btn { background: var(--ahs-gold); border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
+        .speak-btn:hover { transform: scale(1.1); background: #f0cc00; }
+        
+        .flex-row { display: flex; align-items: flex-start; margin-bottom: 15px; }
+        .opt-row { display: flex; align-items: center; width: 100%; margin-bottom: 12px; }
+
+        .nav-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; justify-content: center; }
+        .nav-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #dadce0; background: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .nav-btn.active { border-color: var(--ahs-maroon); background: var(--ahs-light); color: var(--ahs-maroon); }
+        .nav-btn.answered { background: #ef4444; border-color: #b91c1c; color: white; }
+        .nav-controls { display: flex; gap: 15px; margin-top: 20px; }
+
+        .summary-card { border: 3px solid var(--ahs-maroon); border-radius: 20px; padding: 30px; margin-bottom: 20px; text-align: center; background: white; }
+        .loader { border: 8px solid #f3f3f3; border-top: 8px solid var(--ahs-maroon); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-neutral-100 min-h-screen">
-    <div id="root"></div>
+<body>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+<div class="container">
+    <div class="school-header">
+        <img src="AHS_LOGO.jpg" alt="AHS Logo" class="school-logo">
+        <p class="school-name">Manuel G. Araullo High School</p>
+        <p class="assessment-title">PHIL-IRI Post Test (Filipino)</p>
+    </div>
 
-        // --- Assessment Data ---
-        const EXAM_DATA = {
-            4: { 
-                title: "PAHIYAS FESTIVAL", 
-                text: `Malapit na ang Pahiyas Festival! Isinasabuhay ito ng mga taga-Lucban, Quezon tuwing ika-15 ng Mayo. "Lubos na ipinagmamalaki natin ito," sabi ni Nanay Sepa. "Inaalala dito ang patron ng magsasaka na si San Isidro Labrador," wika ni Mang Kanor. "Balita na ito hanggang kabisera. Walang tigil ang mga kababayan natin sa paghahanda,” dagdag ni Nanay Sepa.
+    <div id="setup-page">
+        <h3>Impormasyon ng Mag-aaral</h3>
+        <div class="row">
+            <div class="field"><label>LRN NO.</label><input type="text" id="lrn"></div>
+            <div class="field"><label>Apelyido</label><input type="text" id="surname"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>Pangalan</label><input type="text" id="firstName"></div>
+            <div class="field mi-field"><label>M.I.</label><input type="text" id="mi" maxlength="2"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>Baitang (Enrollment)</label>
+                <select id="studentGrade">
+                    <option value="7">Baitang 7</option>
+                    <option value="8">Baitang 8</option>
+                    <option value="9">Baitang 9</option>
+                    <option value="10">Baitang 10</option>
+                </select>
+            </div>
+            <div class="field"><label>Seksyon</label><input type="text" id="section"></div>
+        </div>
+        <button class="btn-primary" onclick="autoStartExam()">Simulan ang Pagsusulit</button>
+    </div>
 
-Buong bahay ay nilalagyan ng mga palamuti. Nagmumula ang mga palamuti sa mga ani sa bukid. Gamit din bilang dekorasyon ang makukulay at iba't ibang hugis na kiping na mula sa bigas. Ang pinakamagandang bahay ay makatatanggap ng malaking gantimpala. "Ihahanda ko rin ang ating kalabaw," sabi ni Mang Kanor. "Pababasbasan natin ito para malayo sa sakit." "Sana maging masagana ang ating ani sa darating na panahon. Hihilingin natin ito sa Dakilang Lumikha," wika ni Nanay Sepa.`, 
-                questions: [
-                    { q: "Ano ang HINDI ginagawa tuwing Pahiyas Festival?", options: ["a. May parada ang lahat ng kalabaw na may sakit.", "b. Binabasbasan ang mga magsasaka at mga kalabaw.", "c. May paligsahan ng pinakamagandang palamuti sa mga bahay."], correct: 0 },
-                    { q: "Isinasabuhay ang Pahiyas Festival sa Lucban, Quezon. Ano ang ibig sabihin ng isinasabuhay sa pangungusap na ito?", options: ["a. Kinikilala ang mga taga-Lucban, Quezon.", "b. Mabubuhay muli ang patron ng Pahiyas Festival.", "c. Inaalala ang patron ng mga magsasaka sa Quezon."], correct: 2 },
-                    { q: "Ano kaya ang makikita sa mga bahay sa Lucban tuwing Pahiyas Festival?", options: ["a. Iba't ibang uri ng mga patron ang inihahanda rito.", "b. May kiping at mga ani na palamuti sa mga bahay.", "c. May makukulay at masasarap na tindang pagkain."], correct: 1 },
-                    { q: "Ano kaya ang nararamdaman ng mga tao sa kuwento?", options: ["a. Nalilito sila", "b. Nasasabik sila.", "c. Nagugulat sila."], correct: 1 },
-                    { q: "Ano ang layunin ng sumulat ng kuwento?", options: ["a. Nais nitong magbigay ng kaalaman.", "b. Hatid nito ang bagong balita.", "c. Hangad nitong mang-aliw."], correct: 0 },
-                    { q: "Ano ang ginamit ng sumulat ng kuwento para ihatid ang mensahe nito?", options: ["a. Gumamit ito ng maingat na paglalarawan.", "b. Isinalaysay nito ang paulit-ulit na pangyayari.", "c. Sinundan nito ang mahabang pinagmulan ng Pahiyas."], correct: 0 }
-                ] 
-            },
-            5: { 
-                title: "KAPALIGIRAN", 
-                text: `Dumaan ang habagat sa Luzon. Nagdulot ito ng pinsala sa tao. Maraming lugar sa Maynila, Pampanga, Quezon, at Aurora ang lumubog sa baha. Nagmistulang malaking karagatan ang mga ito. Lumutang din at natangay ng baha ang tambak na basura. Malaking halaga ang nawala sa libo-libong mamamayan. Maraming pananim ang nasira sanhi ng malakas at patuloy na pag-ulan. Marami ring buhay ang nakitil. Nasira ang mga bahay, tulay, at malalaking gusali. Isang dahilan nito ay ang pagguho ng lupa o landslide.
+    <div id="transition-step" style="display:none; text-align:center; padding:50px;">
+        <h2 style="color:var(--ahs-maroon);">Sinusuri ang Resulta...</h2>
+        <div class="loader"></div>
+        <p id="transition-msg" style="font-weight:bold; font-size:1.2rem;"></p>
+    </div>
 
-Maiiwasan sana ang pagguho ng lupa sa mga kabundukan kung isasagawa ng mga tao ang programa ng Kagawaran ng Pangangalaga sa Kapaligiran at Likas na Yaman. Ang muling pagtatanim ng puno sa gubat o reforestation sa mga nakalbong kabundukan ay makatutulong sa pag-iwas ng pagguho ng lupa. Malaki ang magagawa nating mga kabataan. Iwasan natin ang paggamit ng mga plastik at ang pagtatapon ng basura kung saan-saan. Mag-umpisa tayong maglinis ng paligid at magtanim ng mga puno sa mga bakanteng lupa ng ating bakuran. Gawin itong luntian upang maging maganda ang kapaligiran.`, 
-                questions: [
-                    { q: "Ano ang sanhi ng paglubog ang mga bahay at pananim?", options: ["a. Natumba ang mga puno.", "b. Malakas ang hanging habagat.", "c. Dumaan ang habagat sa maraming lugar.", "d. Nagmistulang dagat ang maraming lugar."], correct: 2 },
-                    { q: "Alin sa sumusunod ang kahulugan ng pangungusap: 'Nagmistulang malaking karagatan ang maraming lugar.'?", options: ["a. Maraming lugar ang lumubog sa karagatan.", "b. Naging bahagi ng karagatan ang maraming lugar.", "c. Malapit sa malawak na karagatan ang lugar na nabanggit.", "d. Maihahambing sa karagatan ang nangyari sa maraming lugar."], correct: 3 },
-                    { q: "Ano ang kasingkahulugan ng salitang nakitil sa binasang seleksyon?", options: ["a. naalanganin", "b. nagkasakit", "c. nagulo", "d. nawala"], correct: 3 },
-                    { q: "Ano kaya ang sanhi ng pagguho ng lupa?", options: ["a. Walang bakod ang mga lupain.", "b. Maraming mga puno ang pinuputol.", "c. Kulang sa paghahanda ang mga tao.", "d. Hindi agad nasabi ang pagdating ng habagat."], correct: 1 },
-                    { q: "Bakit kailangang alagaan ang kapaligiran?", options: ["a. maiwasan ang habagat", "b. maiwasan ang pagbabaha", "c. makatulong sa komunidad", "d. maitayo ang nasirang mga bahay"], correct: 1 },
-                    { q: "Ano ang pangunahing ideya na tinalakay sa seleksyon?", options: ["a. sanhi ng habagat", "b. mga tinamaan ng habagat", "c. pangangalaga sa habagat", "d. habagat at ang mga dulot nito"], correct: 3 },
-                    { q: "Ano ang ginamit ng may-akda upang ipaabot ang mensahe nito?", options: ["a. Tinalakay ang bunga at solusyon ng paksa.", "b. Ibinigay ang mga problema tungkol sa paksa.", "c. Inilahad ang pagkakasunud-sunod ng mga pangyayari.", "d. Gumamit ng maraming halimbawa sa buong seleksyon."], correct: 0 }
-                ] 
-            },
-            6: { 
-                title: "POPULASYON", 
-                text: `Ang usapin ng populasyon ay mahalaga para sa pag-unlad ng isang bansa. Ang mabilis na paglaki ng populasyon ay kritikal sa madaling pagkaubos ng likas na yaman. Kung ang likas na yaman ay isa sa pangunahing batayan ng pag-unlad ng isang bansa, ang malaking populasyon ay nangangahulugang maramihang paggamit sa likas ng yaman. Nangangahulugan ito ng mabagal na pag-unlad. Marami ang naniniwalang ang malaking populasyon ng Piipinas ang sanhi kung bakit karamihan sa Pilipino ay naghihirap.
+    <div id="test-step" style="display:none;">
+        <div id="question-nav" class="nav-container"></div>
+        <div id="step-indicator"></div>
+        <div id="part-label" class="grade-header"></div>
+        <div id="passage-reference"></div>
+        <div id="quiz-area"></div>
+        
+        <div class="nav-controls">
+            <button id="prev-btn" class="btn-primary" style="background:#5f6368" onclick="prevQuestion()">Naunang Tanong</button>
+            <button id="next-btn" class="btn-primary" onclick="handleNext()">Susunod na Tanong</button>
+        </div>
+    </div>
 
-Dahil sa malaking populasyon, hindi na matugunan ng pamahalaan ang pagbibigay ng mga pangunahing pangangailangan ng mamamayan. Kabilang dito ang pagkain, tirahan, pananamit, edukasyon at kalusugan. Marami rin ang walang hanapbuhay kung kaya't nangingibang-bansa sila kung saan mas malaki ang kita. Bagamat malaki ang naitutulong ng Pilipinong nagtatrabaho sa ibang bansa dahil sa kanilang dollar remittance, napakalaking pagtitiis ang mawalay sa pamilya para lamang matugunan ang pangangailangan nito.
+    <div id="results-step" style="display:none;">
+        <h2 style="text-align:center; color:var(--ahs-maroon); font-size: 2rem; margin-bottom: 30px;">Ulat ng Pagsusulit</h2>
+        <div id="cumulative-results"></div>
+        <button id="db-btn" class="btn-primary" style="background:#28a745" onclick="sendToDatabase()">I-SAVE SA DATABASE</button>
+    </div>
+    
+    <div style="margin-top: 40px; text-align: center; color: var(--ahs-maroon); font-size: 10px; line-height: 1.4; border-top: 1px solid #eee; padding-top: 15px;">
+        <p>This platform is developed and maintained by: <strong>Dianne M. Maure, Giezel P. Busa, Isiash Cassius B. Santiago</strong></p>
+        <p>For inquiries, please contact: Viber: +639-XXXX-XXXX | Email: ahsprojectfriend@gmail.com</p>
+        <p style="margin-top: 8px; font-style: italic; opacity: 0.8;">Privacy Note: Data collected (LRN, Names, and Scores) are used exclusively for school assessment records, in compliance with the Data Privacy Act of 2012.</p>
+    </div>
+</div>
 
-Ang iba naman ay nakikisangkot sa iligal na gawain tulad ng pagnanakaw, pagbebenta ng iligal na droga at iba pang krimen. Ang krimen na dulot ng matinding kahirapan ay hadlang din sa pag-unlad ng ekonomiya dahil sa kawalan ng seguridad sa lipunan. Nagiging dahilan din ito upang mabigong mahikayat ang mga dayuhan na mamuhunan sa ating bansa.`, 
-                questions: [
-                    { q: "Alin sa sumusunod ang HINDI nagpapakita ng bunga ng malaking populasyon?", options: ["a. Napipilitang gumawa ng krimen ang ibang mamamayan.", "b. Hindi mabilis ang pag-unlad ng ekonomiya sa bansa.", "c. Nangingibang-bansa ang mga Piipino para maranasan ang ibang kultura.", "d. Hindi lubos na natutugunan ang kalusugan at edukasyon ng mamamayan."], correct: 2 },
-                    { q: "Alin sa sumusunod ang HINDI nasasaad sa seleksyon?", options: ["a. Isang bunga ng malaking populasyon ang pagtaas ng krimen sa bansa.", "b. Natutugunan ng pamahalaan sa pangunahing pangangailangan ng mga Piipino.", "c. Higit na maraming likas na yaman ang nagagamit ng mas malaking populasyon.", "d. May kaugnayan ang malaking populasyon sa paghahanapbuhay ng mga Piipino sa ibang bansa."], correct: 1 },
-                    { q: "Ano ang HINDI kahulugan ng salitang nakikisangkot sa pangungusap: 'Ang iba naman ay nakikisangkot sa illegal na gawain tulad ng pagnanakaw,pagbebenta ng illegal na droga at iba pang krimen.'?", options: ["a. nakikianib", "b. nakikisama", "c. nakikisuri", "d. nakikisapi"], correct: 2 },
-                    { q: "Alin sa sumusunod ang kahulugan ng pangungusap: 'Nagiging dahilang ito upang mabigong mahikayat ang mga dayuhan na mamuhunan sa bansa.'?", options: ["a. Bigo ang dayuhan sa paghihikayat sa ating bansa.", "b. May dahilan na kombinsihin ang dayuhan na mamuhunan sa bansa.", "c. Walang tagumpay ang pag-akit sa dayuhan na mamuhunan sa bansa.", "d. Nabibigo ang dayuhan na hikayatin ang Pilipinas na maglabas ng puhunan."], correct: 2 },
-                    { q: "Alin sa sumusunod ang pangunahing ideya ng seleksyon?", options: ["a. May solusyon sa malaking populasyon.", "b. Ang usapin sa populasyon ay akma sa ating bansa.", "c. Maraming dulot na bunga ang malaking populasyon.", "d. Kaugnay sa malaking populasyon ang hanapbuhay ng mamamayan."], correct: 2 },
-                    { q: "Ano ang layunin ng sumulat ng seleksyon?", options: ["a. Hatid nito ang isang balita.", "b. Hangad nitong manghikayat.", "c. Gusto nitong magbigay ng aral.", "d. Nais nitong magbigay ng kaalaman."], correct: 3 },
-                    { q: "Ano ang ginamit ng sumulat ng seleksyon upang ipaabot ang mensaite nito?", options: ["a. Binanggit ang problema sa bansa.", "b. Tinalakay ang sanhi at mga bunga ng paksa.", "c. Isinalaysay ang mga pangyayari sa seleksyon.", "d. Nakasaad ang mga suliranin at solusyon ng paksa."], correct: 1 },
-                    { q: "Alin sa sumusunod ang isa pang magandang pamagat para sa seleksyon?", options: ["a. Usapin sa Populasyon", "b. Sanhi ng Malaking Populasyon", "c. Solusyon sa Malaking Populasyon", "d. Mga Bunga ng Malaking Populasyon"], correct: 3 }
-                ] 
-            },
-            7: { 
-                title: "MAHALIN NATIN ANG ATING KAPALIGIRAN", 
-                text: `Hindi mo ba natanong sa sarili mo kung paano mo namamalayan ang mga nangyayari sa ating kapaligiran? Natanong mo rin ba sa sarili mo kung ano ang magagawa mo para sa Inang Kalikasan?
+<script>
+    const FINAL_GS_LINK = "https://script.google.com/macros/s/AKfycbz-tWZVJfL7jc1hEDbEJfpbNV2QyG1IcoJEiJf869uSUCdq8YD7vrfRlwyDkGaEwHilfA/exec";
 
-Ang ating kapaligiran parang kapatid na rin natin dahil ito ay parang isang tao na kailangang alaagaan, mahalin, proteaktahan, at huwag pabayaan kundi ito ay pagmalasakitan.
+    const examData = {
+        4: { 
+            title: "PAHIYAS FESTIVAL", 
+            text: "Malapit na ang Pahiyas Festival! Isinasabuhay ito ng mga tagaLucban, Quezon tuwing ika-15 ng Mayo.\n\"Lubos na ipinagmamalaki natin ito,\" sabi ni Nanay Sepa.\n\"Inaalala dito ang patron ng magsasaka na si San Isidro Labrador,\" wika ni Mang Kanor.\n\"Balita na ito hanggang kabisera. Walang tigil ang mga kababayan natin sa paghahanda,” dagdag ni Nanay Sepa.\nBuong bahay ay nilalagyan ng mga palamuti. Nagmumula ang mga palamuti sa mga ani sa bukid. Gamit din bilang dekorasyon ang makukulay at iba't ibang hugis na kiping na mula sa bigas.\nAng pinakamagandang bahay ay makatatanggap ng malaking gantimpala.\n\"Ihahanda ko rin ang ating kalabaw,\" sabi ni Mang Kanor. \"Pababasbasan natin ito para malayo sa sakit.\"\n\"Sana maging masagana ang ating ani sa darating na panahon. Hihilingin natin ito sa Dakilang Lumikha,\" wika ni Nanay Sepa.", 
+            questions: [
+                { q: "Ano ang HINDI ginagawa tuwing Pahiyas Festival?", options: ["May parada ang lahat ng kalabaw na may sakit.", "Binabasbasan ang mga magsasaka at mga kalabaw.", "May paligsahan ng pinakamagandang palamuti sa mga bahay."], correct: 0 },
+                { q: "Isinasabuhay ang Pahiyas Festival sa Lucban, Quezon. Ano ang ibig sabihin ng isinasabuhay sa pangungusap na ito?", options: ["Kinikilala ang mga taga-Lucban, Quezon.", "Mabubuhay muli ang patron ng Pahiyas Festival.", "Inaalala ang patron ng mga magsasaka sa Quezon."], correct: 2 },
+                { q: "Ano kaya ang makikita sa mga bahay sa Lucban tuwing Pahiyas Festival?", options: ["Iba't ibang uri ng mga patron ang inihahanda rito.", "May kiping at mga ani na palamuti sa mga bahay.", "May makukulay at masasarap na tindang pagkain."], correct: 1 },
+                { q: "Ano kaya ang nararamdaman ng mga tao sa kuwento?", options: ["Nalilito sila", "Nasasabik sila.", "Nagugulat sila."], correct: 1 },
+                { q: "Ano ang layunin ng sumulat ng kuwento?", options: ["Nais nitong magbigay ng kaalaman.", "Hatid nito ang bagong balita.", "Hangad nitong mang-aliw."], correct: 0 },
+                { q: "Ano ang ginamit ng sumulat ng kuwento para ihatid ang mensahe nito?", options: ["Gumamit ito ng maingat na paglalarawan.", "Isinalaysay nito ang paulit-ulit na pangyayari.", "Sinundan nito ang mahabang pinagmulan ng Pahiyas."], correct: 0 }
+            ] 
+        },
+        5: { 
+            title: "KAPALIGIRAN", 
+            text: "Dumaan ang habagat sa Luzon. Nagdulot ito ng pinsala sa tao. Maraming lugar sa Maynila, Pampanga, Quezon, at Aurora ang lumubog sa baha. Nagmistulang malaking karagatan ang mga ito.\nLumutang din at natangay ng baha ang tambak na basura. Malaking halaga ang nawala sa libo-libong mamamayan. Maraming pananim ang nasira sanhi ng malakas at patuloy na pag-ulan.\nMarami ring buhay ang nakitil. Nasira ang mga bahay, tulay, at malalaking gusali. Isang dahilan nito ay ang pagguho ng lupa o landslide.\nMaiiwasan sana ang pagguho ng lupa sa mga kabundukan kung isasagawa ng mga tao ang programa ng Kagawaran ng Pangangalaga sa Kapaligiran at Likas na Yaman.\nAng muling pagtatanim ng puno sa gubat o reforestation sa mga nakalbong kabundukan ay makatutulong sa pag-iwas ng pagguho ng lupa.\nMalaki ang magagawa nating mga kabataan. Iwasan natin ang paggamit ng mga plastik at ang pagtatapon ng basura kung saan-saan.\nMag-umpisa tayong maglinis ng paligid at magtanim ng mga puno sa mga bakanteng lupa ng ating bakuran. Gawin itong luntian upang maging maganda ang kapaligiran", 
+            questions: [
+                { q: "Ano ang sanhi ng paglubog ang mga bahay at pananim?", options: ["Natumba ang mga puno.", "Malakas ang hanging habagat.", "Dumaan ang habagat sa maraming lugar.", "Nagmistulang dagat ang maraming lugar."], correct: 2 },
+                { q: "Alin sa sumusunod ang kahulugan ng pangungusap: 'Nagmistulang malaking karagatan ang maraming lugar.'?", options: ["Maraming lugar ang lumubog sa karagatan.", "Naging bahagi ng karagatan ang maraming lugar.", "Malapit sa malawak na karagatan ang lugar na nabanggit.", "Maihahambing sa karagatan ang nangyari sa maraming lugar."], correct: 3 },
+                { q: "Ano ang kasingkahulugan ng salitang nakitil sa binasang seleksyon?", options: ["naalanganin", "nagkasakit", "nagulo", "nawala"], correct: 3 },
+                { q: "Ano kaya ang sanhi ng pagguho ng lupa?", options: ["Walang bakod ang mga lupain.", "Maraming mga puno ang pinuputol.", "Kulang sa paghahanda ang mga tao.", "Hindi agad nasabi ang pagdating ng habagat."], correct: 1 },
+                { q: "Bakit kailangang alagaan ang kapaligiran?", options: ["maiwasan ang habagat", "maiwasan ang pagbabaha", "makatulong sa komunidad", "maitayo ang nasirang mga bahay"], correct: 1 },
+                { q: "Ano ang pangunahing ideya na tinalakay sa seleksyon?", options: ["sanhi ng habagat", "mga tinamaan ng habagat", "pangangalaga sa habagat", "habagat at ang mga dulot nito"], correct: 3 },
+                { q: "Ano ang ginamit ng may-akda upang ipaabot ang mensahe nito?", options: ["Tinalakay ang bunga at solusyon ng paksa.", "Ibinigay ang mga problema tungkol sa paksa.", "Inilahad ang pagkakasunud-sunod ng mga pangyayari.", "Gumamit ng maraming halimbawa sa buong seleksyon."], correct: 0 }
+            ] 
+        },
+        6: { 
+            title: "POPULASYON", 
+            text: "Ang usapin ng populasyon ay mahalaga para sa pag-unlad ng isang bansa. Ang mabilis na paglaki ng populasyon ay kritikal sa madaling pagkaubos ng likas na yaman. Kung ang likas na yaman ay isa sa pangunahing batayan ng pag-unlad ng isang bansa, ang malaking populasyon ay nangangahulugang maramihang paggamit sa likas ng yaman. Nangangahulugan ito ng mabagal na pag-unlad. Marami ang naniniwalang ang malaking populasyon ng Piipinas ang sanhi kung bakit karamihan sa Pilipino ay naghihirap.\nDahil sa malaking populasyon, hindi na matugunan ng pamahalaan ang pagbibigay ng mga pangunahing pangangailangan ng mamamayan. Kabilang dito ang pagkain, tirahan, pananamit, edukasyon at kalusugan.\nMarami rin ang walang hanapbuhay kung kaya't nangingibang-bansa sila kung saan mas malaki ang kita. Bagamat malaki ang naitutulong ng Pilipinong nagtatrabaho sa ibang bansa dahil sa kanilang dollar remittance, napakalaking pagtitiis ang mawalay sa pamilya para lamang matugunan ang pangangailangan nito.\nAng iba naman ay nakikisangkot sa iligal na gawain tulad ng pagnanakaw, pagbebenta ng iligal na droga at iba pang krimen. Ang krimen na dulot ng matinding kahirapan ay hadlang din sa pag-unlad ng ekonomiya dahil sa kawalan ng seguridad sa lipunan. Nagiging dahilan din ito upang mabigong mahikayat ang mga dayuhan na mamuhunan sa ating bansa.", 
+            questions: [
+                { q: "Alin sa sumusunod ang HINDI nagpapakita ng bunga ng malaking populasyon?", options: ["Napipilitang gumawa ng krimen ang ibang mamamayan.", "Hindi mabilis ang pag-unlad ng ekonomiya sa bansa.", "Nangingibang-bansa ang mga Piipino para maranasan ang ibang kultura.", "Hindi lubos na natutugunan ang kalusugan at edukasyon ng mamamayan."], correct: 2 },
+                { q: "Alin sa sumusunod ang HINDI nasasaad sa seleksyon?", options: ["Isang bunga ng malaking populasyon ang pagtaas ng krimen sa bansa.", "Natutugunan ng pamahalaan sa pangunahing pangangailangan ng mga Piipino.", "Higit na maraming likas na yaman ang nagagamit ng mas malaking populasyon.", "May kaugnayan ang malaking populasyon sa paghahanapbuhay ng mga Piipino sa ibang bansa."], correct: 1 },
+                { q: "Ano ang HINDI kahulugan ng salitang nakikisangkot sa pangungusap: 'Ang iba naman ay nakikisangkot sa illegal na gawain'?", options: ["nakikianib", "nakikisama", "nakikisuri", "nakikisapi"], correct: 2 },
+                { q: "Alin sa sumusunod ang kahulugan ng pangungusap: 'Nagiging dahilang ito upang mabigong mahikayat ang mga dayuhan na mamuhunan sa bansa.'?", options: ["Bigo ang dayuhan sa paghihikayat sa ating bansa.", "May dahilan na kombinsihin ang dayuhan na mamuhunan sa bansa.", "Walang tagumpay ang pag-akit sa dayuhan na mamuhunan sa bansa.", "Nabibigo ang dayuhan na hikayatin ang Pilipinas na maglabas ng puhunan."], correct: 2 },
+                { q: "Alin sa sumusunod ang pangunahing ideya ng seleksyon?", options: ["May solusyon sa malaking populasyon.", "Ang usapin sa populasyon ay akma sa ating bansa.", "Maraming dulot na bunga ang malaking populasyon.", "Kaugnay sa malaking populasyon ang hanapbuhay ng mamamayan."], correct: 2 },
+                { q: "Ano ang layunin ng sumulat ng seleksyon?", options: ["Hatid nito ang isang balita.", "Hangad nitong manghikayat.", "Gusto nitong magbigay ng aral.", "Nais nitong magbigay ng kaalaman."], correct: 3 },
+                { q: "Ano ang ginamit ng sumulat ng seleksyon upang ipaabot ang mensahe nito?", options: ["Binanggit ang problema sa bansa.", "Tinalakay ang sanhi at mga bunga ng paksa.", "Isinalaysay ang mga pangyayari sa seleksyon.", "Nakasaad ang mga suliranin at solusyon ng paksa."], correct: 1 },
+                { q: "Alin sa sumusunod ang isa pang magandang pamagat para sa seleksyon?", options: ["Usapin sa Populasyon", "Sanhi ng Malaking Populasyon", "Solusyon sa Malaking Populasyon", "Mga Bunga ng Malaking Populasyon"], correct: 3 }
+            ] 
+        },
+        7: { 
+            title: "MAHALIN NATIN ANG ATING KAPALIGIRAN", 
+            text: "Hindi mo ba natanong sa sarili mo kung paano mo namamalayan ang mga nangyayari sa ating kapaligiran? Natanong mo rin ba sa sarili mo kung ano ang magagawa mo para sa Inang Kalikasan?\nAng ating kapaligiran parang kapatid na rin natin dahil ito ay parang isang tao na kailangang alaagaan, mahalin, protektahan, at huwag pabayaan kundi ito ay pagmalasakitan.\nAng ating kamalayan sa ating kapaligiran o sa ating Inang Kapaligiran ay mahalaga dahil minsan hindi mo na alam kung ano ang ginagawa mo na sa kanya at minsan hindi mo na talaga napapansin na parang napapatay mo na pala siya na parang isang hayop na kinakatay lamang. Kung napapansin ninyo ngayon ang ginagawa ngayon ng mga tao sa ating mga Likas na Yaman, ito ngayon ay paubos nang paubos hanggang hindi mo namalayan na wala na pala.\nIturo sa ating mga anak ang kahalagahan ng ating kalikasan, na dapat natin itong alagaan, protektahan, mahalin at huwag pababayaan dahil totoo nga ang wika ng ating Pambansang Bayani nasi Dr. Jose Rizal na \"Ang kabataan ang pagasa ng ating bayan.\"", 
+            questions: [
+                { q: "Batay sa unang bahagi ng binasang teksto, saan tahasang inihahambing ang kalikasan?", options: ["isang bagay", "isang bayan", "isang hayop", "isang tao"], correct: 3 },
+                { q: "Alin sa sumusunod na pahayag ang tuwirang tumutukoy sa ganti ng kalikasan?", options: ["pagguho ng lupa sa mga bulubundukin", "pagkasira ng mga yamang-lupa", "pagkaubos ng mga isda sa dagat", "pananalasa ng iba't ibang kalamidad"], correct: 3 },
+                { q: "\"Ang ibang tao ay gumagawa lamang ng kasamaan sa ating kalikasan kung kinakailangan dahil ito ang kanilang ikinabubuhay.\" Ano ang nais ipabatid ng pahayag?", options: ["Labag sa kanilang kalooban ang ginagawang masama.", "Marami ang patuloy na gumagawa ng masama.", "Pilit nilang ginagawa ang masama sa kalikasan.", "Umaasa lamang sila sa biyaya ng kalikasan."], correct: 3 },
+                { q: "Sino ang tinutukoy na kapatid sa akda?", options: ["Bayan", "Kalamidad", "Kapaligiran", "Tao"], correct: 2 },
+                { q: "\"Kung patuloy itong nagaganap sa ating kapaligiran, malamang maidadamay rin ang mga walang kinalaman sa ganti ng kalikasan.\" Ano ang nais iparating ng may- akda?", options: ["pagbibigay-babala", "pagbibigay-puna", "pagninisi", "panghihinayang"], correct: 0 },
+                { q: "Alin sa sumusunod ang HINDI pinaninindigan ng may-akda?", options: ["Ang mga anak ay dapat turuan nang wastong pangangalaga sa kalikasan.", "Ang mga kalamidad ay tunay na parusa sa tao dahil sa pagkasira ng kalikasan.", "Ang mga trahedyang nararanasan ng tao ay senyales ng pagganti ng kalikasan.", "Ang mga tao ay gumagawa ng masama para sa ikasisira ng kalikasan."], correct: 3 },
+                { q: "Bakit kailangang matutunan ng mga kabataan ang wastong pagpapahalaga sa ating kalikasan?", options: ["upang mas lalong dumami ang ating likas na yaman", "upang may maraming gusali ang maipatayo sa komunidad", "upang mapreserba ang kagandahan ng kapaligiran", "upang patuloy na maprotektahan ang mga kabataan"], correct: 2 },
+                { q: "Ano ang maaring gawin ng tao upang makatulong at mas lalo pang gumanda ang ating kapaligiran?", options: ["Gumagawa ng makabuluhang hakbang sa pagtatapon ng basura.", "Nagkakaroon ng maayos na sistema sa mga relocation sites.", "Pagbibigay ng mga epektibong organic fertilizer sa mga magsasaka.", "Pagkakaroon ng solid waste management control sa bawat komunidad."], correct: 3 },
+                { q: "Ano ang munting paraan na magagawa mo para sa kalikasan?", options: ["Iwasan ang pagtatapon ng basura sa maling lalagyan at kapaligiran.", "Hikayatin ang buong pamilya na simulan ang maayos na pagtapon ng basura.", "Mamuno sa kampanya laban sa maling pagtapon ng basura sa buong baranggay.", "Tumulong sa paglilinis ng basura sa buong barangay at kapaligiran."], correct: 0 },
+                { q: "Paano mo maipakikita ang pagmamahal sa ating kapaligiran lalo na sa loob ng paaralan?", options: ["Pag-aalaga ng mga halaman sa tahanan at pamayanan.", "Paggamit ng mga basura bilang pampataba ng halaman sa bahay.", "Paglilinis sa silid-aralan at pagtapon ng basura sa wastong lalagyan.", "Pagtatanim ng mga halaman at punongkahoy."], correct: 2 }
+            ] 
+        },
+        8: { 
+            title: "PANGUNAHING SENYALES NG DIABETES SA MGA BATA", 
+            text: "Ayon sa International Diabetes Foundation, ang Pilipinas ay isa sa mga bansang may mabilis na pagtaas ng bilang ng nagkakaroon ng diabetes. Noong taong 2014, mahigit tatlong milyong Pinoy ang nagkaroon ng diabetes sa buong bansa.\nSobra ang sugar sa dugo ng taong may diabetes. Ang sugar na ito ay nanggagaling sa mga pagkain gaya ng tinapay, cereals, pasta, kanin, prutas, gulay at ibang produktong may dairy.\nAng Type 1 Diabetes ang karaniwang uri ng diabetes na tumatama sa mga bata. Ang lapay o pancreas ng batang may Type 1 diabetes ay hindi kayang mag-produce ng insulin, ang hormone na nagkokontrol ng blood sugar level.\nAng mga batang obese o overweight, may family history ng diabetes, hindi aktibo at hindi kumakain ng maayos ay may malaking tsansang magkaroon ng Type 2 Diabetes.\nHeto ang mga sintomas ng Type 1 Diabetes: Madalas na pag-ihi at pag-inom ng tubig, Pagkain ng madami, Pamamayat, Pagkadama ng sobrang pagod, Malabong paningin, at Yeast Infection.\nMahalagang magpakonsulta agad sa doctor kung napansin ang mga nabanggit dahil maaaring maiwasan ang ibang kumplikasyon kung madedetect ng maaga ang kondisyon.", 
+            questions: [
+                { q: "Ano ang sobra sa dugo ng isang tao kaya nagkakaroon siya ng Diabetes?", options: ["Proteins", "Fats", "Sugar", "Mineral Salt"], correct: 2 },
+                { q: "Ayon sa PDA, ilang milyong Pilipino ang tinatayang may Diabetes noong taong 2014?", options: ["5 milyon", "4 milyon", "3 milyon", "6 milyon"], correct: 2 },
+                { q: "Alin sa sumusunod ang ligtas na kainin upang maiwasan ang mataas na lebel asukal sa dugo?", options: ["tinapay at cereals", "isda at seafoods", "prutas at gulay", "pasta at kanin"], correct: 2 },
+                { q: "Paano nagkakaroon ng Type 1 Diabetes ang isang tao?", options: ["Ang lapay ay hindi nagpoproduce ng insulin na isang hormone.", "Mabilis na nakararating sa puso ang sugar.", "Umaabot sa kidney ang sugar.", "Naiipon ang sugar sa puso."], correct: 0 },
+                { q: "Anong sitwasyon ang makadaragdag sa tsansa ng Type 2 Diabetes?", options: ["I at II", "I at III", "III at IV", "I at IV"], correct: 1 },
+                { q: "Sino sa mga bata ang nagpapakita ng sintomas ng Type 1 Diabetes?", options: ["Danovan at Giean", "Giean at Wingard", "Wingard at Lixli", "Danovan at Lixli"], correct: 3 },
+                { q: "Ano ang pangunahing hakbang kung sakaling mapansin ang mga sintomas?", options: ["Uminom ng gamot sa botika.", "Magpunta sa albularyo.", "Iwasan ang pagkaing matamis.", "Magpakonsulta agad sa doktor."], correct: 3 },
+                { q: "Ano ang maaaring mangyari sa batang hindi maagang na-detect?", options: ["Maaaring magkaroon ng DKA na nakamamatay.", "Manlalabo ang paningin.", "Maranas ang yeast infection.", "Maranas ang Type 2 Diabetes."], correct: 0 },
+                { q: "Aling espesyalistang doktor ang maaaring lapitan para sa monitor ng pagkain?", options: ["Pediatrician", "Nutritionist", "Opthalmologist", "Orthopedic"], correct: 1 },
+                { q: "Ano ang panghabang buhay na gamot para sa Type 1 Diabetes?", options: ["Pag-inom ng antibiotics.", "Pagturok ng insulin injections.", "Pagpapalit ng dugo (dialysis).", "Pagkain ng sugar free."], correct: 1 }
+            ] 
+        },
+        9: { 
+            title: "ALEGORYA NG UPUAN", 
+            text: "Sa mga programa sa eskwelahan, iyong mga upuang nasa entablado ang sentro ng mga mata ng mga manonood. Iyong mga upuang may ukit na disenyong bulaklakin, makinis dahil sa pagkakabarnis, malambot upuan na sadyang iniayos para sa mga \"mahal na tao.\"\nSamantalang ang mga upuan naman sa ibaba ng entablado ay inihanay lamang nang madalian, binagsak nang pabarabara. Kahit na madumi o may sulat, luma at magaspang.\nAng pinakaeleganteng upuan ay nasa tanggapan ng presidente ng kompanya. Samantalang ang mga karaniwang upuan, ay nanduong pagpapatung-patungin lamang upang maisalansan sa bodegang taguan.\nMuli ay sisipatin ko ang upuan sa itaas ng entablado. Isang hayag na pedestal na maghihiwalay sa estado ng sinumang doo'y uupo. Sapagkat habang ninanasa ng marami ang maupo sa maringal na upuan, isang bagay ang tiyak na mangyayari sa programa ng buhay. Matapos ang lahat, bababa ang mga nasa entablado, tatayo ang mga nasa karaniwang upuan. Lahat, upang lumabas sa bulwagan.\nKung naniniwala ang iba na ang kaalaman ay nagmumula sa mga nasa pangunahing upuan, magugulat ka kapag nakita mo na ang tunay na nakakakita ay silang mula sa likod, sa mga di napapansing nasa dulo, sa mga nasa hamak na mababa.", 
+            questions: [
+                { q: "Batay sa binasa, alin ang hindi kapantay ng iba?", options: ["upuang nakalaan sa pari", "upuan sa ibaba ng entablado", "upuan sa tanggapan ng pangulo", "upuang may ukit na bulaklakin"], correct: 1 },
+                { q: "Sino ang nagsasalita sa teksto?", options: ["guro", "mag-aaral", "pari", "punongguro"], correct: 0 },
+                { q: "Sa unang talata, anong estilo ang ginamit ng manunulat?", options: ["paglalahad", "paglalarawan", "pagpapatunay", "pangangatuwiran"], correct: 1 },
+                { q: "Aling sa sumusunod ang HINDI tinalakay sa ikaapat na talata?", options: ["Dapat paniwalaan na may kaalamang matututuhan sa mga espesyal na upuan.", "Lahat ng tao ay hahantong sa pagwawakas sa pagdating ng kamatayan.", "May pagnanais ang mga tao na malagay sa mataas na antas.", "Nasa taas ka man, darating ang panahon na ikaw ay mabababa."], correct: 0 },
+                { q: "Saan sa sumusunod mababasa ang paksang pangungusap?", options: ["Ikalawang talata", "Ikatlong talata", "Ikaapat na talata", "Ikalimang talata"], correct: 2 },
+                { q: "Ano ang konotatibong kahulugan ng 'upuan'?", options: ["kalagayan sa buhay", "pagiging komportable", "patas na pagtingin", "tungkulin na ginagampanan"], correct: 0 },
+                { q: "Ano ang nangibabaw na damdamin o tono ng teksto?", options: ["Paghihiganti", "Paghihinanakit", "Pagpapahalaga sa nasa mababa", "Panghihinayang"], correct: 2 },
+                { q: "Anong paraan ang ginamit upang mapalinaw ang damdamin?", options: ["Pagbibigay ng direksyon", "Paggamit ng kawikaan", "Paglalarawan sa magkaibang bagay", "Pagsasalaysay ng nakaraan"], correct: 2 },
+                { q: "Sa pagtatapos ng akda, papaano inihanay ang mga ideya?", options: ["pagbibigay ng hamon", "paghahalimbawa ng okasyon", "paglalahad ng kondisyon", "pagpapakita ng imahe ng likurang upuan"], correct: 3 },
+                { q: "Anong paraan ang ginamit upang makalap ang impormasyon?", options: ["pagbabasa", "paghihinuha", "pagmamasid", "panghuhula"], correct: 2 }
+            ] 
+        },
+        10: { 
+            title: "WHANG-OD: HULING TUNAY NA MAMBABATOK", 
+            text: "Tanyag ang mga tribo sa Kalinga sa malalaki at detalyadong tattoo. Ang tradisyong ito na tinatawag na pagbabatok ay pinangangambahang tuluyan nang maglaho. Mabuti at ito ay naipagpapatuloy pa ng huling mambabatok na si Apo Whang-od.\nNagsimula ang kaniyang pambabatok sa edad na 15. Ang tattoo ay hindi lamang basta palamuti; ito ay sumasagisag sa kalakasan at katapangan. Sa kababaihan ang tattoo ay palamuti, sa kalalakihan ito ay inilalagay kapag nakapatay sila ng kalaban.\nUpang magawa ang pambabatok, gumagamit siya ng sanga ng kalamansi na may tinik. Ayon sa tradisyon, ang kaniyang pagta-tattoo ay maaari lamang mamana ng kaniyang angkan. Naniniwala siya na magkakaimpeksyon ang tattoo kapag hindi niya kadugo ang magbabatok.\nAni Whang-od, hihinto siya kapag tuluyan nang lumabo ang kaniyang mga mata. Hinihikayat na niya ang kaniyang mga apo na ipagpatuloy ang tradisyong ito.", 
+            questions: [
+                { q: "Anong akdang pampanitikan ang naglalayong magpahayag at magpaliwanag?", options: ["Dula", "Maikling kuwento", "Epiko", "Sanaysay"], correct: 3 },
+                { q: "Paano napanatili ang tradisyong pambabatok?", options: ["Hindi kailanman kinalimutan.", "Ipinagpatuloy ni Whang-od.", "Mas piniling magbigay respeto.", "Naipagpatuloy ng mga apo."], correct: 1 },
+                { q: "Ano ang pangunahing paksa?", options: ["Paglalaho ng kultura", "Pambabatok ni Whang-od", "Pambabatok ng mga apo", "Panganib na malimutan"], correct: 1 },
+                { q: "Anong damdamin ang nararamdaman ng taga-Kalinga sakaling maglaho ito?", options: ["Pagkagalit", "Pagkatakot", "Pagkalungkot", "Pangamba"], correct: 3 },
+                { q: "Anong malinaw na dahilan sa paglalagay ng tattoo sa kalalakihan?", options: ["Katapangan at kadakilaan", "Palamuti sa kasal", "Panghabang-buhay na palamuti", "Sumasagisag sa kalakasan at katapangan"], correct: 3 },
+                { q: "Bakit dapat mamana lamang ng angkan ang sining?", options: ["Ipinagpatuloy ng apo.", "Hindi ipinagpatuloy.", "Magkakaimpeksyon kung hindi kadugo.", "Para lamang sa tribo."], correct: 2 },
+                { q: "Paano ipinakita na ang paksa ay isang suliranin sa preserbasyon?", options: ["Malinaw na suliranin sa lipunan.", "Totoong pangyayari at nakapanayam.", "Kuwentong hango sa buhay.", "Paglilikom ng datos."], correct: 1 }
+            ] 
+        }
+    };
 
-Ang ating kamalayan sa ating kapaligiran o sa ating Inang Kapaligiran ay mahalaga dahil minsan hindi mo na alam kung ano ang ginagawa mo na sa kanya at minsan hindi mo na talaga napapansin na parang napapatay mo na pala siya na parang isang hayop na kinakatay lamang. Kung napapansin ninyo ngayon ang ginagawa ngayon ng mga tao sa ating mga Likas na Yaman, ito ngayon ay paubos nang paubos hanggang hindi mo namalayan na wala na pala. Ito ay isa lamang sa mga ginagawang kasamaan ng tao sa ating kalikasan.
+    let sessionResults = [], queue = [], activeGrade, currentQIdx, currentScore;
+    let totalTestsInSequence = 1;
+    let finalPayload = {};
+    let currentAnswers = [];
+    let audioObj = new Audio();
 
-Kung may inaayunan naman ang kalikasan, meron din itong kinaiinisan. Itong kanyang kinaiinisan ay ang mga taong gumagawa ng mga delikadong mga pamamaraan na kung minsan din ay lumalason sa ating "Kapatid". Kung patuloy itong nagaganap sa ating kapaligiran, malamang maidadamay rin ang mga walang kinalaman sa ganti ng kalikasan.
+    function play(file) {
+        audioObj.pause();
+        audioObj = new Audio('audio/' + file + '.mp3');
+        audioObj.play().catch(e => console.log("Audio not found: " + file));
+    }
 
-Ang mga halimbawa ng mga ganti ng kalikasan ay ang mga patuloy at magkakasunod na pagdating ng mga kalamidad tulad ng nangyari sa Japan na napakalakas na lindol at ang kasunod ay isang dambuhalang tsunami na sumira ng mga gusali, bahay, kalakal, at kumitil ng mga buhay. Ang mga trahedyang nangyayari ay ilan lamang sa sinyales ng pagganti ng kalikasan.
+    function autoStartExam() {
+        const gradeInput = document.getElementById('studentGrade');
+        activeGrade = parseInt(gradeInput.value);
+        document.getElementById('setup-page').style.display='none';
+        runGradeSequence(activeGrade);
+    }
 
-Dapat rin nating ituro sa ating mga anak ang kahalagahan ng ating kalikasan, na dapat natin itong alagaan, proteaktahan, mahalin at huwag pabababayaan dahil totoo nga ang wika ng ating Pambansang Bayani na si Dr. Jose Rizal na "Ang kabataan ang pagasa ng ating bayan."`, 
-                questions: [
-                    { q: "Batay sa unang bahagi ng binasang teksto, saan tahasang inihahambing ang kalikasan?", options: ["A. isang bagay", "B. isang bayan", "C. isang hayop", "D. isang tao"], correct: 3 },
-                    { q: "Alin sa sumusunod na pahayag ang tuwirang tumutukoy sa ganti ng kalikasan?", options: ["A. pagguho ng lupa sa mga bulubundukin", "B. pagkasira ng mga yamang-lupa", "C. pagkaubos ng mga isda sa dagat", "D. pananalasa ng iba't ibang kalamidad"], correct: 3 },
-                    { q: "Ano ang nais ipabatid ng pahayag: 'Ang ibang tao ay gumagawa lamang ng kasamaan sa ating kalikasan kung kinakailangan dahil ito ang kanilang ikinabubuhay.'?", options: ["A. Labag sa kanilang kalooban ang ginagawang masama.", "B. Marami ang patuloy na gumagawa ng masama.", "C. Pilit nilang ginagawa ang masama sa kalikasan.", "D. Umaasa lamang sila sa biyaya ng kalikasan."], correct: 0 },
-                    { q: "Itong kaniyang kinaiinisan ay ang mga taong gumagawa ng mga delikadong mga pamamaraan na kung minsan din ay lumalason sa ating Kapatid. Sino ang tinutukoy na kapatid sa akda?", options: ["A. Bayan", "B. Kalamidad", "C. Kapaligiran", "D. Tao"], correct: 2 },
-                    { q: "Kung patuloy itong nagaganap sa ating kapaligiran, malamang maidadamay rin ang mga walang kinalaman sa ganti ng kalikasan. Ano ang nais iparating ng may-akda sa pahayag na ito?", options: ["A. pagbibigay-babala", "B. pagbibigay-puna", "C. pagninisi", "D. panghihinayang"], correct: 0 },
-                    { q: "Alin sa sumusunod ang HINDI pinaninindigan ng may-akda ukol sa isyung tinatalakay?", options: ["A. Ang mga anak ay dapat turuan nang wastong pangangalaga sa kalikasan.", "B. Ang mga kalamidad ay tunay na parusa sa tao dahil sa pagkasira ng kalikasan.", "C. Ang mga trahedya ay senyales ng pagganti ng kalikasan.", "D. Ang mga tao ay gumagawa ng masama para sa ikasisira ng kalikasan."], correct: 1 },
-                    { q: "Bakit kailangang alagaan ang kapaligiran?", options: ["A. upang dumami ang likas na yaman", "B. upang may maraming gusali ang maipatayo sa komunidad", "C. upang mapreserba ang kagandahan ng kapaligiran", "D. upang maprotektahan ang kabataan"], correct: 2 },
-                    { q: "Ano ang maaring gawin ng tao upang makatulong at mas lalo pang gumanda ang ating kapaligiran?", options: ["A. Gumagawa ng makabuluhang hakbang sa pagtatapon ng basura.", "B. Nagkakaroon ng maayos na sistema sa mga relocation sites.", "C. Pagbibigay ng mga epektibong organic fertilizer sa mga magsasaka.", "D. Pagkakaroon ng solid waste management control sa bawat komunidad."], correct: 3 },
-                    { q: "Kung ikaw ang kabataan na tinutukoy ng ating pambansang bayani na si Dr. Jose P. Rizal bilang pag-asa ng bayan, ano ang munting paraan na magagawa mo para sa kalikasan?", options: ["A. Iwasan ang pagtatapon ng basura sa maling lalagyan at kapaligiran.", "B. Hikayatin ang buong pamilya na simulan ang maayos na pagtapon ng basura.", "C. Mamuno sa kampanya laban sa maling pagtapon ng basura sa buong baranggay.", "D. Tumulong sa paglilinis ng basura sa buong barangay at kapaligiran."], correct: 1 },
-                    { q: "Bilang isang mabuting mag-aaral, paano mo maipakikita ang pagmamahal sa ating kapaligiran lalo na sa loob ng paaralan?", options: ["A. Pag-aalaga ng mga halaman sa tahanan at pamayanan.", "B. Paggamit ng mga basura bilang pampataba ng halaman sa bahay.", "C. Paglilinis sa silid-aralan at pagtapon ng basura sa wastong lalagyan.", "D. Pagtatanim ng mga halaman at punongkahoy."], correct: 2 }
-                ] 
-            },
-            8: { 
-                title: "PANGUNAHING SENYALES NG DIABETES SA MGA BATA", 
-                text: `Ayon sa International Diabetes Foundation, ang Pilipinas ay isa sa mga bansang may mabilis na pagtaas ng bilang ng nagkakaroon ng diabetes. Noong taong 2014, mahigit tatlong milyong Pinoy ang nagkaroon nito.
+    function runGradeSequence(level) {
+        activeGrade = level; currentQIdx = 0; currentScore = 0;
+        currentAnswers = new Array(examData[activeGrade].questions.length).fill(null);
+        document.getElementById('test-step').style.display = 'block';
+        document.getElementById('step-indicator').style.display = 'block';
+        generateNav();
+        updateStepCounter();
+        loadQuestion();
+    }
 
-Ang Type 1 Diabetes ang karaniwang uri ng diabetes na tumatama sa mga bata. Ang lapay o pancreas ng batang may Type 1 diabetes ay hindi kayang mag-produce ng insulin, ang hormone na nagkokontrol ng blood sugar level. Ang mga batang may ganitong kondisyon ay nangangailangang magturok ng insulin at mag-monitor ng blood sugar habambuhay.
+    function generateNav() {
+        const nav = document.getElementById('question-nav');
+        nav.innerHTML = examData[activeGrade].questions.map((_, i) => `
+            <button id="nav-btn-${i}" class="nav-btn" onclick="jumpToQuestion(${i})">${i + 1}</button>
+        `).join('');
+    }
 
-Sintomas ng Type 1 Diabetes:
-1. Madalas na pag-ihi at pag-inom ng tubig.
-2. Pagkain ng madami (madalas magutom).
-3. Pamamayat dahil sa kawalan ng energy.
-4. Pagkadama ng sobrang pagod.
-5. Malabong paningin.
-6. Yeast Infection sa mga batang babae.
-
-Mahalagang magpakonsulta agad sa doctor kung napansin ang mga nabanggit dahil maaaring maiwasan ang ibang kumplikasyon gaya ng 'diabetic ketoacidosis' (DKA).`, 
-                questions: [
-                    { q: "Ano ang sobra sa dugo ng isang tao kaya nagkakaroon siya ng Diabetes?", options: ["A. Proteins", "B. Fats", "C. Sugar", "D. Mineral Salt"], correct: 2 },
-                    { q: "Ayon sa Philippine Diabetes Association, ilang milyong Pilipino ang tinatayang may Diabetes noong taong 2014?", options: ["A. 5 milyon", "B. 4 milyon", "C. 3 milyon", "D. 6 milyon"], correct: 2 },
-                    { q: "Alin sa sumusunod ang ligtas na kainin upang maiwasan ang mataas na asukal?", options: ["A. prutas at gulay", "B. isda at seafoods", "C. tinapay at cereals", "D. pasta at kanin"], correct: 1 },
-                    { q: "Paano nagkakaroon ng Type 1 Diabetes ang isang tao na karaniwang tumatama sa mga bata?", options: ["A. Ang lapay ay hindi nagpoproduce ng insulin.", "B. Mabilis na nakararating sa puso ang sugar.", "C. Naiipon ang sugar sa kidney.", "D. Naiipon ang sugar sa puso."], correct: 0 },
-                    { q: `Anong sitwasyon ang makadaragdag sa tsansang magkaroon ang isang bata ng Type 2 Diabetes?
-I. Ang mga kamag-anak ay may sakit na Diabetes.
-II. Aktibong nakikipaglaro sa mga bata sa labas.
-III. Mahilig kumain ng junk foods at candies.
-IV. Wastong timbang na naaayon sa edad.`, options: ["A. I at II", "B. I at III", "C. III at IV", "D. I at IV"], correct: 1 },
-                    { q: "Sino sa mga bata ang nagpapakita ng sintomas ng Type 1 Diabetes?", options: ["A. Danovan at Giean", "B. Giean at Wingard", "C. Wingard at Lixli", "D. Danovan at Lixli"], correct: 3 },
-                    { q: "Ano ang pangunahing hakbang kung sakaling mapansin ang mga sintomas?", options: ["A. Uminom ng gamot.", "B. Magpunta sa albularyo.", "C. Iwasan ang matatamis.", "D. Magpakonsulta agad sa doktor."], correct: 3 },
-                    { q: "Ano ang maaaring mangyari sa batang hindi maagang na-detect?", options: ["A. Maaaring magkaroon ng DKA.", "B. Panlalabo ng paningin.", "C. Yeast infection.", "D. Magiging Type 2 Diabetes."], correct: 0 },
-                    { q: "Aling doktor ang maaaring lapitan?", options: ["A. Pediatrician", "B. Nutritionist", "C. Opthalmologist", "D. Orthopedic"], correct: 1 },
-                    { q: "Ano ang gamot para sa Type 1 Diabetes?", options: ["A. Antibiotics", "B. Insulin", "C. Dialysis", "D. Diet"], correct: 1 }
-                ] 
-            },
-            9: { 
-                title: "ALEGORYA NG UPUAN", 
-                text: `Sa mga programa sa eskwelahan, iyong mga upuang nasa entablado ang sentro ng mga mata ng mga manonood.
-Iyong mga upuang may ukit na disenyong bulaklakin, makinis dahil sa pagkakabarnis, malambot upuan na sadyang iniayos para sa mga "mahal na tao."
-Samantalang ang mga upuan naman sa ibaba ng entablado ay inihanay lamang nang madalian.
-Ang pinakaeleganteng upuan ay nasa tanggapan ng presidente ng kompanya o trono ng hari.
-Samantalang ang mga karaniwang upuan ay pagpapatung-patungin lamang sa bodega.
-Isang hayag na pedestal na maghihiwalay sa estado ng sinumang doo'y uupo.
-Sapat na para sa isang guro ang manatiling nakatayo sa mga gilid upang magbantay sa kanyang mga mag-aaral.
-Sapagkat habang ninanasa ng marami ang maupo sa maringal na upuan, sa huli, lahat ay tatayo upang lumabas sa bulwagan kapag pinatugtog na ang musika ng paghihiwalay.
-Bago patayin ang ilaw, muling isasalansan ang mga upuan. Ang mahahalagang upuan ay matutulad din ba sa iba? Maluluma at isasalansan din sa bodega.
-Magugulat ka kapag nakita mo na ang tunay na nakakakita ay silang mula sa likod, sa mga di napapansing nasa dulo.`, 
-                questions: [
-                    { q: "Batay sa binasa, alin ang hindi kapantay ng iba?", options: ["A. upuang nakalaan sa pari", "B. upuan sa ibaba ng entablado", "C. upuan sa tanggapan ng pangulo", "D. upuang may ukit na bulaklakin"], correct: 1 },
-                    { q: "Sino ang nagsasalita sa teksto?", options: ["A. guro", "B. mag-aaral", "C. pari", "D. punongguro"], correct: 0 },
-                    { q: "Anong estilo ang ginamit sa pagtalakay sa ideya ng upuan?", options: ["A. paglalahad", "B. paglalarawan", "C. pagpapatunay", "D. pangangatuwiran"], correct: 1 },
-                    { q: "Alin ang HINDI tinalakay sa teksto?", options: ["A. Ang kaalaman ay mula sa espesyal na upuan.", "B. Lahat ay hahantong sa pagwawakas.", "C. May pagnanais ang tao sa mataas na antas.", "D. Maluluma rin ang mga upuan."], correct: 0 },
-                    { q: "Ano ang konotatibong kahulugan ng upuan?", options: ["A. kalagayan sa buhay", "B. pagiging komportable", "C. patas na pagtingin", "D. tungkulin"], correct: 3 },
-                    { q: "Ano ang tono ng teksto?", options: ["A. Paghihiganti", "B. Paghihinanakit", "C. Pagpapahalaga sa mababa", "D. Panghihinayang"], correct: 0 },
-                    { q: "Paano inihanay ang mga ideya sa pagtatapos?", options: ["A. pagbibigay ng hamon", "B. paghahalimbawa", "C. paglalahad ng kondisyon", "D. pagpapakita ng imahe ng upuan sa likod"], correct: 2 },
-                    { q: "Anong paraan ang ginamit para makalap ang impormasyon?", options: ["A. pagbabasa", "B. paghihinuha", "C. pagmamasid", "D. panghuhula"], correct: 2 },
-                    { q: "Sa pagtatapos ng akda, papaano inihanay ng manunulat ang mga ideya?", options: ["A. pagbibigay ng hamon upang maiayos ang mga nasa unahang upuan", "B. paghahalimbawa ng mga okasyon kung saan may espesyal na upuan", "C. paglalahad ng kondisyong pabor sa kapwa nasa harapan at likurang upuan", "D. pagpapakita ng imahe ng mga upuang nakapwesto sa likuran na pag-iisipan"], correct: 3 },
-                    { q: "Anong paraan ang masasabing ginamit ng may-akda upang makalap ang mga impormasyong inilahad niya sa teksto?", options: ["A. pagbabasa", "B. paghihinuha", "C. pagmamasid", "D. panghuhula"], correct: 2 }
-                ] 
-            },
-            10: { 
-                title: "WHANG-OD: ANG KUWENTO SA LIKOD NG HULING TUNAY NA MAMBABATOK", 
-                text: `Tanyag ang mga tribo sa Kalinga sa malalaki at detalyadong mga tattoo. Ang tradisyong ito na tinatawag na pagbabatok ay pinangangambahang maglaho, ngunit naipagpapatuloy pa ng orihinal na mambabatok na si Apo Whang-od sa Buscalan.
-
-Nagsimula siya sa edad na 15, isang sining na ipinamana ng kaniyang ama. Ang tattoo ay sumasagisag sa kalakasan at katapangan para sa mga mandirigma. Sa kababaihan, ito ay palamuti na mananatili hanggang sa kabilang buhay. Gumagamit si Whang-od ng sanga ng kalamansi na may tinik, abo, at tubig. Naniniwala siya na ang kaniyang pagta-tattoo ay maaari lamang mamana ng kaniyang angkan upang maiwasan ang impeksyon. Hihinto lamang siya kapag tuluyan nang lumabo ang kaniyang mga mata. Tunay ngang kahanga-hanga ang tradisyong ito bilang mayamang kultura ng ating bansa.`, 
-                questions: [
-                    { q: "Anong akdang pampanitikan ito?", options: ["A. Dula", "B. Maikling kuwento", "C. Epiko", "D. Sanaysay"], correct: 3 },
-                    { q: "Paano napanatili ang tradisyon?", options: ["A. Hindi kailanman nakalimutan.", "B. Ipinagpatuloy ni Whang-od.", "C. Respeto sa kultura.", "D. Naipagpatuloy ng apo."], correct: 1 },
-                    { q: "Ano ang pangunahing paksa?", options: ["A. Paglalaho ng kultura", "B. Pambabatok ni Whang-od.", "C. Pambabatok ng mga apo", "D. Panganib na malimutan"], correct: 1 },
-                    { q: "Anong damdamin ang nararamdaman sakaling maglaho ang kultura?", options: ["A. Pagkagalit", "B. Pagkatakot", "C. Pagkalungkot", "D. Pangamba"], correct: 3 },
-                    { q: "Ano ang dahilan ng tattoo sa lalaki?", options: ["A. Pagpapakita ng kadakilaan.", "B. Palamuti.", "C. Panghabang buhay na tanda.", "D. Kalakasan at katapangan."], correct: 3 },
-                    { q: "Paano naipakita na ang pagta-tattoo ay dapat lamang mamana ng angkan?", options: ["A. Ipinagpatuloy ng mga apo.", "B. Hindi ipinamana sa iba.", "C. Magkakaimpeksyon kung hindi kadugo.", "D. Para lamang sa taga-Kalinga."], correct: 2 },
-                    { q: "Paano ipinakita na ang paksa ay isyu sa preserbasyon?", options: ["A. Isyu sa lipunan.", "B. Totoong pangyayari at panayam.", "C. Kuwentong hango sa buhay.", "D. Paglilikom ng datos."], correct: 1 },
-                    { q: "Angkop pa ba isagawa ang pambabatok sa modernisadong panahon?", options: ["A. Hindi, dahil hindi na sila mandirigma.", "B. Hindi, dapat na itong kalimutan.", "C. Oo, dahil tradisyon itong namana.", "D. Oo, dahil palamuti lang ito."], correct: 3 },
-                    { q: "Ano ang mensahe tungrob sa pagpapamana sa apo?", options: ["A. Hindi napapagod si Whang-od.", "B. Hihinto siya kapag malabo na ang mata.", "C. Nais niyang maipagpatuloy ang tradisyon.", "D. Hindi kailangan ang tradisyon."], correct: 2 },
-                    { q: "Ano ang epekto kung susuportahan ito ng gobyerno?", options: ["A. Tataas ang magpapatattoo.", "B. Uunlad ang turismo sa Kalinga.", "C. Makikilala ang pambabatok.", "D. Makakagulo sa turismo."], correct: 2 }
-                ] 
+    function updateNavStyles() {
+        examData[activeGrade].questions.forEach((_, i) => {
+            const btn = document.getElementById(`nav-btn-${i}`);
+            if(btn){
+                btn.classList.toggle('active', i === currentQIdx);
+                btn.classList.toggle('answered', currentAnswers[i] !== null);
             }
-        };
+        });
+    }
 
-        // ILAGAY DITO ANG IYONG DEPLOYED APPS SCRIPT URL
-        const FINAL_GS_LINK = "https://script.google.com/macros/s/AKfycbwADFpLeWz-XJEAK3ppMvSdTLn_NbDr-Kox9hebmyYnLbvgOULNymVM-3CGi_83j4WK1w/exec";
+    function updateStepCounter() {
+        document.getElementById('step-indicator').innerText = `Pagsusulit ${sessionResults.length + 1} sa ${totalTestsInSequence}`;
+    }
 
-        // --- SVGs for Icons ---
-        const VolumeIcon = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-        );
-        const UserIcon = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        );
-        const BookIcon = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-        );
-        const GradIcon = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-        );
-        const CheckIcon = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        );
+    function loadQuestion() {
+        const exam = examData[activeGrade]; 
+        const q = exam.questions[currentQIdx];
+        const isAudio = (activeGrade >= 4 && activeGrade <= 6);
+        const prefix = 'G' + activeGrade;
 
-        function App() {
-            const [view, setView] = useState('setup'); 
-            const [isSubmitting, setIsSubmitting] = useState(false);
-            const [submitSuccess, setSubmitSuccess] = useState(false);
-            const [student, setStudent] = useState({ lrn: '', surname: '', firstName: '', mi: '', enrollmentGrade: '7', section: '' });
-            const [activeGrade, setActiveGrade] = useState(7);
-            const [currentQIdx, setCurrentQIdx] = useState(0);
-            const [currentAnswers, setCurrentAnswers] = useState({}); 
-            const [sessionResults, setSessionResults] = useState([]);
-            const [queue, setQueue] = useState([]);
-            const [transitionMsg, setTransitionMsg] = useState('');
-            const audioRef = useRef(new Audio());
-            const passageRef = useRef(null);
-
-            const handleStart = () => {
-                if (!student.lrn || !student.surname || !student.firstName) {
-                    alert("Pakiusap, punan ang lahat ng mahahalagam impormasyon.");
-                    return;
-                }
-                setActiveGrade(parseInt(student.enrollmentGrade));
-                setCurrentAnswers({});
-                setCurrentQIdx(0);
-                setSessionResults([]);
-                setView('testing');
-            };
-
-            const handleChoice = (idx) => {
-                setCurrentAnswers(prev => ({ ...prev, [currentQIdx]: idx }));
-                if (currentQIdx + 1 < EXAM_DATA[activeGrade].questions.length && currentAnswers[currentQIdx] === undefined) {
-                    setCurrentQIdx(prev => prev + 1);
-                }
-            };
-
-            const finalizeCurrentTest = () => {
-                const questions = EXAM_DATA[activeGrade].questions;
-                let finalScore = 0;
-                questions.forEach((q, i) => { if (currentAnswers[i] === q.correct) finalScore++; });
-
-                const total = questions.length;
-                const pct = finalScore / total;
-                const profile = (pct >= 0.8) ? "Independent" : (pct >= 0.59) ? "Instructional" : "Frustration";
-
-                const result = { grade: activeGrade, score: `${finalScore}/${total}`, profile };
-                const updatedResults = [...sessionResults, result];
-                setSessionResults(updatedResults);
-
-                let newQueue = [...queue];
-                // Rule: If Grade 7 fails, take 4, 5, 6
-                if (updatedResults.length === 1 && activeGrade === 7 && profile === "Frustration") {
-                    newQueue = [4, 5, 6];
-                } else if (updatedResults.length === 1) {
-                    // Branching Logic
-                    if (profile === "Frustration") {
-                        let nextGrade = Math.max(4, activeGrade - 3);
-                        if (nextGrade < activeGrade) newQueue.push(nextGrade);
-                    } else if (profile === "Independent" || profile === "Instructional") {
-                        // User request: passed (Independent/Instructional) means 3 levels up
-                        let nextGrade = Math.min(10, activeGrade + 3);
-                        if (nextGrade > activeGrade) newQueue.push(nextGrade);
-                    }
-                }
-
-                if (newQueue.length > 0) {
-                    const nextG = newQueue.shift();
-                    setQueue(newQueue);
-                    setTransitionMsg(`Sinusuri ang Baitang ${activeGrade}... Inihahanda ang Baitang ${nextG}.`);
-                    setView('transition');
-                    setTimeout(() => {
-                        setActiveGrade(nextG);
-                        setCurrentAnswers({});
-                        setCurrentQIdx(0);
-                        setView('testing');
-                    }, 2500);
-                } else {
-                    setView('results');
-                }
-            };
-
-            const sendToDatabase = async () => {
-                setIsSubmitting(true);
-                const formData = new URLSearchParams();
-                
-                // Add student basic info
-                formData.append('lrn', student.lrn);
-                formData.append('surname', student.surname);
-                formData.append('firstName', student.firstName);
-                formData.append('mi', student.mi);
-                formData.append('enrollmentGrade', student.enrollmentGrade);
-                formData.append('section', student.section);
-
-                // Add test scores and profiles
-                sessionResults.forEach(r => {
-                    formData.append(`g${r.grade}_score`, r.score);
-                    formData.append(`g${r.grade}_profile`, r.profile);
-                });
-
-                try {
-                    // Pass the URLSearchParams object DIRECTLY to body. 
-                    // This forces the correct 'application/x-www-form-urlencoded' Content-Type.
-                    await fetch(FINAL_GS_LINK, { 
-                        method: 'POST', 
-                        mode: 'no-cors', 
-                        body: formData 
-                    });
-                    
-                    setSubmitSuccess(true);
-                    setTimeout(() => window.location.reload(), 4000);
-                } catch (e) {
-                    console.error("Submission error:", e);
-                    alert("May error sa pagpapadala ng datos. Pakisuri ang koneksyon.");
-                } finally {
-                    setIsSubmitting(false);
-                }
-            };
-
-            return (
-                <div className="max-w-6xl w-full mx-auto my-8 bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100 relative">
-                    <header className="p-10 border-b-4 border-red-900 text-center bg-white relative">
-                        <div className="flex items-center justify-center gap-3 mb-2">
-                            <GradIcon />
-                            <h1 className="text-lg font-black text-red-900 tracking-[0.4em] uppercase">Manuel G. Araullo High School</h1>
-                        </div>
-                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-2 uppercase tracking-tighter">PHIL-IRI POST TEST</h2>
-                        <div className="inline-block bg-yellow-400 text-black px-8 py-2 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">Antas ng Pag-unawa sa Pagbasa</div>
-                    </header>
-
-                    <main className="p-8 md:p-16">
-                        {view === 'setup' && (
-                            <div className="space-y-6 max-w-2xl mx-auto">
-                                <div className="bg-red-50 border-l-4 border-red-800 p-4 rounded-r-lg flex items-center gap-3">
-                                    <UserIcon />
-                                    <div>
-                                        <h3 className="text-red-900 font-bold uppercase text-sm">Impormasyon</h3>
-                                        <p className="text-xs text-red-700">Paki-fill up ang form sa ibaba.</p>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <div className="md:col-span-2">
-                                        <label className="text-xs font-bold text-gray-400 uppercase">LRN Number</label>
-                                        <input type="text" className="w-full p-4 border-2 rounded-2xl outline-none focus:border-red-800" value={student.lrn} onChange={(e)=>setStudent({...student, lrn: e.target.value})} placeholder="12-digit LRN" />
-                                    </div>
-                                    <input type="text" placeholder="Apelyido" className="p-4 border-2 rounded-2xl outline-none" value={student.surname} onChange={(e)=>setStudent({...student, surname: e.target.value})} />
-                                    <input type="text" placeholder="Pangalan" className="p-4 border-2 rounded-2xl outline-none" value={student.firstName} onChange={(e)=>setStudent({...student, firstName: e.target.value})} />
-                                    <input type="text" placeholder="M.I." maxLength="2" className="p-4 border-2 rounded-2xl outline-none" value={student.mi} onChange={(e)=>setStudent({...student, mi: e.target.value})} />
-                                    <select className="p-4 border-2 rounded-2xl outline-none bg-white" value={student.enrollmentGrade} onChange={(e)=>setStudent({...student, enrollmentGrade: e.target.value})}>
-                                        <option value="7">Baitang 7</option>
-                                        <option value="8">Baitang 8</option>
-                                        <option value="9">Baitang 9</option>
-                                        <option value="10">Baitang 10</option>
-                                    </select>
-                                    <input type="text" placeholder="Seksyon" className="md:col-span-2 p-4 border-2 rounded-2xl outline-none" value={student.section} onChange={(e)=>setStudent({...student, section: e.target.value})} />
-                                </div>
-                                <button onClick={handleStart} className="w-full py-5 bg-red-900 text-white rounded-2xl font-black uppercase hover:bg-red-950 flex items-center justify-center gap-3 transition-colors shadow-lg active:scale-[0.98]"><BookIcon /> Magsimula</button>
-                            </div>
-                        )}
-
-                        {view === 'testing' && (
-                            <div className="flex flex-col lg:flex-row gap-6">
-                                <aside className="lg:w-48">
-                                    <div className="bg-white rounded-3xl border-2 p-4 shadow-sm lg:sticky lg:top-4">
-                                        <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 text-center">Navigasyon</h3>
-                                        <div className="grid grid-cols-5 lg:grid-cols-2 gap-2">
-                                            {EXAM_DATA[activeGrade].questions.map((_, idx) => (
-                                                <button key={idx} onClick={() => setCurrentQIdx(idx)} className={`h-10 rounded-xl font-black text-sm border-2 transition-all ${currentQIdx === idx ? 'bg-yellow-400 border-yellow-500 scale-105' : currentAnswers[idx] !== undefined ? 'bg-red-50 border-red-200 text-red-900' : 'bg-gray-50'}`}>{idx+1}</button>
-                                            ))}
-                                        </div>
-                                        {Object.keys(currentAnswers).length === EXAM_DATA[activeGrade].questions.length && (
-                                            <button onClick={finalizeCurrentTest} className="w-full mt-6 py-3 bg-red-900 text-white rounded-xl text-[10px] font-black uppercase animate-pulse shadow-md">Tapusin ang Level</button>
-                                        )}
-                                    </div>
-                                </aside>
-
-                                <div className="flex-1 space-y-6">
-                                    <div className="flex justify-between items-center text-sm font-bold bg-red-50 p-4 rounded-2xl border-l-4 border-red-800">
-                                        <span className="bg-yellow-400 px-4 py-1.5 rounded-full uppercase text-black font-black">Baitang {activeGrade}</span>
-                                        <span className="text-red-900">Tanong {currentQIdx + 1} / {EXAM_DATA[activeGrade].questions.length}</span>
-                                    </div>
-                                    <div ref={passageRef} className="bg-white border-2 border-yellow-400 rounded-3xl p-6 md:p-10 max-h-[400px] overflow-y-auto shadow-xl">
-                                        <div className="serif text-xl leading-relaxed whitespace-pre-wrap">
-                                            <h3 className="text-center font-black mb-6 text-2xl text-red-900 border-b pb-4">{EXAM_DATA[activeGrade].title}</h3>
-                                            {EXAM_DATA[activeGrade].text}
-                                        </div>
-                                    </div>
-                                    <div className="bg-white rounded-[2.5rem] p-8 border-2 shadow-2xl relative">
-                                        <div className="absolute -top-3 left-8 bg-red-900 text-white text-[10px] font-black uppercase px-4 py-1 rounded-full">Katanungan</div>
-                                        <h4 className="text-2xl font-black mb-8 mt-2 text-gray-900">{EXAM_DATA[activeGrade].questions[currentQIdx].q}</h4>
-                                        <div className="grid grid-cols-1 gap-4">
-                                            {EXAM_DATA[activeGrade].questions[currentQIdx].options.map((opt, i) => (
-                                                <button key={i} onClick={() => handleChoice(i)} className={`text-left p-5 rounded-2xl border-2 flex items-center gap-4 transition-all hover:border-red-800 ${currentAnswers[currentQIdx] === i ? 'border-red-800 bg-red-50 text-red-900 shadow-md' : 'border-gray-100'}`}>
-                                                    <span className={`w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center font-black ${currentAnswers[currentQIdx] === i ? 'bg-red-800 text-white' : 'bg-gray-100 text-gray-600'}`}>{['A','B','C','D'][i]}</span>
-                                                    <span className="font-bold">{opt}</span>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {view === 'transition' && (
-                            <div className="text-center py-32 space-y-6 animate-pulse">
-                                <div className="w-16 h-16 border-4 border-red-900 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                                <h2 className="text-2xl font-black uppercase text-red-900 tracking-tighter">{transitionMsg}</h2>
-                            </div>
-                        )}
-
-                        {view === 'results' && (
-                            <div className="space-y-8 max-w-2xl mx-auto text-center animate-in fade-in duration-700">
-                                <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-sm">
-                                    <CheckIcon />
-                                </div>
-                                <h2 className="text-4xl font-black uppercase text-gray-900">Ulat ng Pagsusulit</h2>
-                                <p className="bg-red-50 p-4 rounded-full font-black uppercase text-red-900 inline-block px-8">{student.firstName} {student.surname}</p>
-                                <div className="grid gap-4 mt-8">
-                                    {sessionResults.map((res, i) => (
-                                        <div key={i} className="bg-white border-2 p-8 rounded-[2rem] flex justify-between items-center shadow-lg hover:scale-[1.02] transition-transform">
-                                            <div className="text-left">
-                                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Level</span>
-                                                <h3 className="text-3xl font-black text-gray-800">Baitang {res.grade}</h3>
-                                            </div>
-                                            <div className="text-right">
-                                                <span className={`px-4 py-1 rounded-full text-xs font-black uppercase ${res.profile === 'Independent' ? 'bg-green-100 text-green-700' : res.profile === 'Instructional' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>{res.profile}</span>
-                                                <div className="text-4xl font-black text-red-900 mt-2">{res.score}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                {!submitSuccess ? (
-                                    <button onClick={sendToDatabase} disabled={isSubmitting} className={`w-full py-6 rounded-[2rem] font-black uppercase tracking-widest shadow-2xl transition-all flex items-center justify-center gap-3 ${isSubmitting ? 'bg-gray-300 text-gray-500' : 'bg-red-900 text-white hover:bg-red-950 active:scale-95'}`}>
-                                        {isSubmitting ? <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span> : null}
-                                        {isSubmitting ? "Ipinapadala..." : "Isumite sa Phil-IRI Database"}
-                                    </button>
-                                ) : (
-                                    <div className="p-8 bg-green-600 text-white rounded-[2rem] font-black uppercase animate-bounce shadow-xl">
-                                        Naipadala na ang datos! Maraming salamat.
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </main>
-
-                    <footer className="p-10 bg-neutral-50 border-t text-center text-[11px] text-gray-400 uppercase font-bold">
-                        Binuo nina: <span className="text-red-900">Dianne M. Maure, Giezel P. Busa, Isiash Cassius B. Santiago</span>
-                    </footer>
+        document.getElementById('part-label').innerText = `Assessment: Baitang ${activeGrade}`;
+        
+        document.getElementById('passage-reference').innerHTML = `
+            <div class="flex-row">
+                ${isAudio ? `<button class="speak-btn" onclick="play('${prefix}S')">🔊</button>` : ''}
+                <div style="flex:1;">
+                    <div style="display:flex; align-items:center; margin-bottom:10px;">
+                        ${isAudio ? `<button class="speak-btn" style="width:30px; height:30px; font-size:14px;" onclick="play('${prefix}T')">🔊</button>` : ''}
+                        <div class="story-title">${exam.title}</div>
+                    </div>
+                    ${exam.text}
                 </div>
-            );
+            </div>`;
+
+        let quizHtml = `
+            <div class="question-card">
+                <div class="flex-row">
+                    ${isAudio ? `<button class="speak-btn" onclick="play('${prefix}Q${currentQIdx + 1}Q')">🔊</button>` : ''}
+                    <div class="q-text" style="margin-bottom:0;">Tanong Blg. ${currentQIdx + 1}: ${q.q}</div>
+                </div>
+                <div style="margin-top:20px;">
+                    ${q.options.map((opt, i) => {
+                        const letter = ['A', 'B', 'C', 'D'][i];
+                        const isSelected = currentAnswers[currentQIdx] === i ? 'selected' : '';
+                        return `
+                        <div class="opt-row">
+                            ${isAudio ? `<button class="speak-btn" onclick="play('${prefix}Q${currentQIdx + 1}${letter}')">🔊</button>` : ''}
+                            <button class="option-btn ${isSelected}" onclick="handleChoice(${i})">${opt}</button>
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>`;
+        document.getElementById('quiz-area').innerHTML = quizHtml;
+
+        document.getElementById('next-btn').innerText = (currentQIdx === exam.questions.length - 1) ? "I-Submit ang Baitang" : "Susunod na Tanong";
+        document.getElementById('prev-btn').style.visibility = currentQIdx === 0 ? 'hidden' : 'visible';
+        
+        updateNavStyles();
+    }
+
+    function handleChoice(idx) {
+        currentAnswers[currentQIdx] = idx;
+        loadQuestion();
+    }
+
+    function jumpToQuestion(idx) { currentQIdx = idx; loadQuestion(); }
+    function prevQuestion() { if(currentQIdx > 0) { currentQIdx--; loadQuestion(); } }
+
+    function handleNext() {
+        const exam = examData[activeGrade];
+        if(currentQIdx < exam.questions.length - 1) {
+            currentQIdx++;
+            loadQuestion();
+        } else {
+            currentScore = 0;
+            exam.questions.forEach((q, i) => { if(currentAnswers[i] === q.correct) currentScore++; });
+            processPhilIriBatchRules();
+        }
+    }
+
+    function processPhilIriBatchRules() {
+        const total = examData[activeGrade].questions.length;
+        const profile = (currentScore / total >= 0.8) ? "Independent" : (currentScore / total >= 0.59) ? "Instructional" : "Frustration";
+        sessionResults.push({ grade: activeGrade, score: `${currentScore}/${total}`, profile: profile });
+
+        if (sessionResults.length === 1) {
+            if (profile === "Frustration") {
+                [activeGrade-3, activeGrade-2, activeGrade-1].forEach(g => { if(g>=4) queue.push(g); });
+            } else if (profile === "Instructional") {
+                if(activeGrade-1>=4) queue.push(activeGrade-1);
+                if(activeGrade+1<=10) queue.push(activeGrade+1);
+            } else if (profile === "Independent") {
+                [activeGrade+1, activeGrade+2].forEach(g => { if(g<=10) queue.push(g); });
+            }
+            totalTestsInSequence = 1 + queue.length;
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+        if (queue.length > 0) showTransition(queue.shift());
+        else showFinalReport();
+    }
+
+    function showTransition(nextG) {
+        document.getElementById('test-step').style.display = 'none';
+        document.getElementById('transition-step').style.display = 'block';
+        document.getElementById('transition-msg').innerText = `Inihahanda ang Baitang ${nextG}...`;
+        setTimeout(() => {
+            document.getElementById('transition-step').style.display = 'none';
+            runGradeSequence(nextG);
+        }, 3000);
+    }
+
+    function showFinalReport() {
+        document.getElementById('test-step').style.display = 'none';
+        document.getElementById('results-step').style.display = 'block';
+        let html = "";
+        finalPayload = {
+            lrn: document.getElementById('lrn').value, surname: document.getElementById('surname').value,
+            firstName: document.getElementById('firstName').value, mi: document.getElementById('mi').value,
+            enrollmentGrade: document.getElementById('studentGrade').value, section: document.getElementById('section').value
+        };
+        sessionResults.forEach(r => {
+            html += `<div class="summary-card"><h3>Baitang ${r.grade} Buod</h3><p>Resulta: ${r.profile}</p><h1>${r.score}</h1></div>`;
+            finalPayload['g' + r.grade + '_score'] = r.score;
+            finalPayload['g' + r.grade + '_profile'] = r.profile;
+        });
+        document.getElementById('cumulative-results').innerHTML = html;
+    }
+
+    async function sendToDatabase() {
+        const btn = document.getElementById('db-btn');
+        btn.innerText = "IPINAPADALA..."; btn.disabled = true;
+        const formData = new URLSearchParams();
+        for (let key in finalPayload) formData.append(key, finalPayload[key]);
+        try {
+            await fetch(FINAL_GS_LINK, { method: 'POST', mode: 'no-cors', body: formData.toString() });
+            btn.innerText = "DATA SENT!"; setTimeout(() => location.reload(), 2000);
+        } catch (e) { btn.innerText = "ERROR - TRY AGAIN"; btn.disabled = false; }
+    }
+</script>
 </body>
 </html>
